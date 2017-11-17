@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="card">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Aplicação teste gerada para urilização de AngularJs">
+    <meta name="author" content="Luiz Bartollo">
+
+    <title>Atividade Prática</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+
+    <style>
+        .no-js #loader {
+            display: none;
+        }
+        
+        .js #loader {
+            display: block;
+            position: absolute;
+            left: 100px;
+            top: 0;
+        }
+        
+        .se-pre-con {
+            position: fixed;
+            left: 0px;
+            top: 0px;
+            width: 100%;
+            height: 100%;
+            z-index: 9999;
+            filter: alpha(opacity=50);
+            opacity: 0.5;
+            background: url(https://www.equilter.com/assets/images/loading.gif) center no-repeat #fff;
+        }
+        
+        body {
+            padding-top: 54px;
+        }
+        
+        @media (min-width: 992px) {
+            body {
+                padding-top: 56px;
+            }
+        }
+        
+        .portfolio-item {
+            margin-bottom: 30px;
+        }
+        
+        .pagination {
+            margin-bottom: 30px;
+        }
+        
+        .alert {
+            display: none;
+        }
+        
+        .alertas {
+            min-height: 60px;
+        }
+        
+        .alertas-principal {
+            padding-top: 20px;
+            min-height: 60px;
+        }
+    </style>
+</head>
+
+<body ng-controller="MainCtrl as ctrl">
+
+    <!-- The Modal -->
+    <div class="modal fade" id="myModal">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">Cadastrar Card</h4>
+                    <div id="alertas" class="alertas"></div>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                <!-- Modal body -->
+                <div class="modal-body">
+
+                    <form class="form-horizontal" name="cadastrocard" id="cadastro-card">
+                        <fieldset>
+
+                            <!-- Text input-->
+                            <div class="form-group">
+                                <label class="col-md-4 control-label" for="titulo">Imagem</label>
+                                <div class="col-md-4">
+                                    <input id="url_imagem" name="url_imagem" type="text" placeholder="" class="form-control input-md" required="" ng-model="card.url_imagem">
+
+                                </div>
+                            </div>
+
+                            <!-- Text input-->
+                            <div class="form-group">
+                                <label class="col-md-4 control-label" for="texto">Descrição</label>
+                                <div class="col-md-4">
+                                    <input id="descricao" name="descricao" type="text" placeholder="" class="form-control input-md" required="" ng-model="card.descricao">
+
+                                </div>
+                            </div>
+
+                        </fieldset>
+                    </form>
+
+                </div>
+
+                <!-- Modal footer -->
+                <div class="modal-footer">
+
+                    <!--<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>-->
+                    <button ng-click="LimparForm(card)" class="btn btn-secondary" id="limpar-card">Limpar</button>
+                    <button ng-click="CriarCard(card)" class="btn btn-primary" id="salvar-card">Salvar</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="alert alert-success" role="alert" ng-show="successMessagebool "><strong>{{tittleMessage}}</strong> <a href="#" class="alert-link">{{successMessage}}</a>.</div>
+
+    <div class="app">
+        <!-- Preloader-->
+        <div class="se-pre-con" ng-show="loading"></div>
+        <!-- Navigation -->
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+            <div class="container">
+                <a class="navbar-brand" href="#">Atividade Prática</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarResponsive">
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item active">
+                            <a class="nav-link" href="#" ng-click="Atualizar()">Atualizar
+                <span class="sr-only">(current)</span>
+              </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" data-toggle="modal" data-target="#myModal">Cadastrar</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Page Content -->
+        <div class="container">
+
+            <div class="alertas-principal"></div>
+            <p class="my-4">
+                <!--  <small>Listar</small> -->
+            </p>
+
+            <div class="row">
+
+                <div class="col-lg-4 col-sm-6 portfolio-item" ng-repeat="item in cards.data">
+                    <div class="card h-100">
+                        <a href="#"><img class="card-img-top" src="{{item.url_imagem}}" alt=""></a>
+                        <div class="card-body">
+                            <h4 class="card-title">
+               <button class="btn btn-success curtir" data-id="{{item.id}}" ng-click="Curtir(item)"> Curtir (<span class="quantidade-likes">{{item.likes}}</span>)</button>
+               <button class="btn btn-danger deletar" data-id="{{item.id}}"  ng-click="Deletar(item)">Deletar</button>
+             </h4>
+                            <p class="card-text">{{item.descricao}}</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <!-- /.row -->
+
+        </div>
+
+    </div>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js">
+    </script>
+    <script type="text/javascript">
+        angular.module('card', [])
+            .controller('MainCtrl', function($scope, $http, $window) {
+
+                $scope.loading = true;
+
+                $http.get('http://bartollo.com.br/angular/cards/').
+                then(function(response) {
+                    $scope.cards = response.data;
+                }).finally(function() {
+                    // Hide loading spinner whether our call succeeded or failed.
+                    $scope.loading = false;
+                });
+
+                $scope.Curtir = function(item) {
+                    $scope.loading = true;
+
+                    $http.post('http://bartollo.com.br/angular/cards/like/', 'id=' + item.id, {
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+                        }
+                    }).
+                    then(function(response) {
+                        item.likes = response.data.qtd_likes;
+                        $window.alert('like com sucesso!');
+
+                    }).finally(function() {
+                        // Hide loading spinner whether our call succeeded or failed.
+                        $scope.loading = false;
+                    });
+
+                };
+
+                $scope.Deletar = function(item) {
+                    $scope.loading = true;
+
+                    var data = {
+                      id:item.id
+                    };
+
+                    $http.delete('http://bartollo.com.br/angular/cards/?id='+item.id).
+                    then(function(response) {
+                        console.log(response);
+
+                        if (response.data.success) {
+                            $window.alert('excluído com sucesso!');
+                            // console.log(item);
+                            var index = $scope.cards.data.indexOf(item);
+                            //console.log(index);
+                            $scope.cards.data.splice(index, 1);
+
+                        }
+                    }).finally(function() {
+                        // Hide loading spinner whether our call succeeded or failed.
+                        $scope.loading = false;
+                    });
+
+                };
+
+                $scope.CriarCard = function(card) {
+                    $scope.loading = true;
+
+                    $http.post('http://bartollo.com.br/angular/cards/', 'url_imagem=' + card.url_imagem + '&descricao=' + card.descricao, {
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+                        }
+                    }).
+                    then(function(response) {
+                        console.log(response);
+
+                        if (response.data.success) {
+
+                            $window.alert('inserido com sucesso!');
+                            angular.copy({}, card);
+                            $scope.$apply();
+
+                            $http.get('http://bartollo.com.br/angular/cards/').
+                            then(function(response) {
+                                $scope.cards = response.data;
+                            });
+
+                        }
+                    }).finally(function() {
+                        // Hide loading spinner whether our call succeeded or failed.
+                        $scope.loading = false;
+                    });
+
+                };
+
+                $scope.LimparForm = function(formModel) {
+                    angular.copy({}, formModel);
+                }
+
+                $scope.Atualizar = function() {
+                    $scope.loading = true;
+
+                    $http.get('http://bartollo.com.br/angular/cards/').
+                    then(function(response) {
+                        $scope.cards = response.data;
+                    }).finally(function() {
+                        // Hide loading spinner whether our call succeeded or failed.
+                        $scope.loading = false;
+                    });
+                }
+
+            });
+    </script>
+
+</body>
+
+</html>
