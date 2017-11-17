@@ -4,7 +4,11 @@ Codificando uma página em Jquery para Angular Js
 Este repositório foi criado para demonstrar uma forma simples de reescrever um web app que utiliza o framework Jquery para Angular Js.
 
 Versão Jquery: http://www.bartollo.com.br/angular/index-jquery.html
+
 Versão Angular Js: http://www.bartollo.com.br/angular/index.html
+
+Demonstração da codificação em vídeo: http://www.bartollo.com.br/angular/demonstacao_codigo.wmv
+
 
 Foram realizados os seguintes passos:
 
