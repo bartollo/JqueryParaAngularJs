@@ -145,11 +145,11 @@ $scope.Atualizar = function() {
 
 8.2 - Os botões receberam os atributos ng-click, assim como , ou link atualizar do header, já que a chamada da inclusão é feita com html5:
 
-Formulário:
+8.2.1 - Formulário:
 <button ng-click="LimparForm(card)" class="btn btn-secondary" id="limpar-card">Limpar</button>
 <button ng-click="CriarCard(card)" class="btn btn-primary" id="salvar-card">Salvar</button>
            
-Header:
+8.2.2 - Header:
 
 <li class="nav-item active">
             <a class="nav-link" href="#" ng-click="Atualizar()">Atualizar
